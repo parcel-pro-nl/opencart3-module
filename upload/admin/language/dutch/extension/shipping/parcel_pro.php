@@ -83,6 +83,7 @@ $_['tab_type_id_07']  = 'UPS, Express';
 $_['tab_type_id_54']  = 'UPS, Express Plus';
 $_['tab_type_id_65']  = 'UPS, Express Saver';
 $_['tab_type_id_dc']  = 'Same Day';
+$_['tab_type_id_9']   = 'Intrapost, Pickup point';
 $_['tab_type_id_VSP2928']  = 'VSP, Brievenbuspakje';
 
 // Column

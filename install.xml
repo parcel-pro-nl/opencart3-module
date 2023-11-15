@@ -1,7 +1,7 @@
 <modification>
     <name><![CDATA[Parcel Pro]]></name>
     <code><![CDATA[Parcel_Pro]]></code>
-    <version><![CDATA[1.2.0]]></version>
+    <version><![CDATA[1.4.0]]></version>
     <author><![CDATA[ParcelPro]]></author>
     <link><![CDATA[http://www.parcelpro.nl]]></link>
     <file path="admin/view/template/sale/order_list.twig">

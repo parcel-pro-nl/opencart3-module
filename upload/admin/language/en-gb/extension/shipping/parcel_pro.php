@@ -62,6 +62,7 @@ $_['tab_type_id_3189']   = 'PostNL, Pakket + handtekening voor ontvangst, ook bi
 $_['tab_type_id_3385'] = 'PostNL, Alleen Huisadres';
 $_['tab_type_id_4940']   = 'PostNL, Pakket buitenland';
 $_['tab_type_id_3533']   = 'PostNL, Pakjegemak';
+$_['tab_type_id_9']   = 'Intrapost, Pickup point';
 $_['tab_type_id_2928']   = 'PostNL, Brievenbuspakje';
 $_['tab_type_id_DFY']  = 'DHL, DFY';
 $_['tab_type_id_Europack']  = 'DHL, EUROPACK';

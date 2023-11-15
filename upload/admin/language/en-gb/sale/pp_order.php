@@ -30,6 +30,7 @@ $_['text_type_id_3189']     = 'PostNL, Pakket + handtekening voor ontvangst, ook
 $_['text_type_id_3385']   = 'PostNL, Alleen Huisadres';
 $_['text_type_id_4940']     = 'PostNL, Pakket buitenland';
 $_['text_type_id_3533']     = 'PostNL, Pakjegemak';
+$_['text_type_id_9']     = 'Intrapost, Pickup point';
 $_['text_type_id_DFY']    = 'DHL, DFY';
 $_['text_type_id_Europlus']    = 'DHL, EUROPLUS';
 $_['text_type_id_DFYParcelshop']    = 'DHL, ParcelShop';

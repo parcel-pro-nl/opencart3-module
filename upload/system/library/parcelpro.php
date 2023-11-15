@@ -73,7 +73,8 @@ class Parcelpro {
         if(in_array($shipping_code[6], $FADELLO)) $carrier = 'Fadello';
         $VSP = array('VSP2928');
         if(in_array($shipping_code[6], $VSP)) $carrier = 'VSP';
-
+        $Intrapost = array('9');
+        if(in_array($shipping_code[6], $Intrapost)) $carrier = 'Intrapost';
 
         $handtekening_bij_aflevering = false;
         $niet_leveren_bij_de_buren = false;
@@ -202,7 +203,7 @@ class Parcelpro {
 
         $data['shipping_company']     = $order['shipping_company'];
 
-        if($data['shipping_method'] == 'parcel_pro_type_id_3533' || $data['shipping_method'] == 'parcel_pro_type_id_Parcelshop'){
+        if($data['shipping_method'] == 'parcel_pro_type_id_9' ||$data['shipping_method'] == 'parcel_pro_type_id_3533' || $data['shipping_method'] == 'parcel_pro_type_id_Parcelshop'){
             $data['shipping_company'] = $order['shipping_company'];
         }
 

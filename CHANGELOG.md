@@ -10,6 +10,22 @@ Getest t/m Opencart 3.0.3.8
 #### Nieuwe functionaliteiten
 - Ondersteuning voor intrapost Pakketpunt
 
+## V1.3.3
+
+#### Fix
+- Juist gebruik van constant variable
+
+## V1.3.2
+
+#### Fix
+- Auto Export
+- Notice melding (Trying to access array offset) in checkout
+
+## V1.3.1
+
+#### Fix
+- DHL parcel punt is wederom instelbaar.
+
 ## V.1.3.0
 
 #### Fix

@@ -61,7 +61,7 @@ class Parcelpro {
             }
         }
 
-        $DHL = array("DFY", "Parcelshop", "Europlus", "Europack");
+        $DHL = array("DFY", "DFYParcelshop", "Europlus", "Europack");
         if(in_array($shipping_code[6], $DHL)) $carrier = 'DHL';
         $POSTNL = array(3085, 3086, 3087, 3089, 3091, 3189, 3385, 4940, 3533, 2928);
         if(in_array($shipping_code[6], $POSTNL)) $carrier = 'PostNl';
@@ -294,6 +294,7 @@ class Parcelpro {
                 switch($code){
                     case'00':
                         $dictionary_types["DFY"] = $type['CarrierNaam'] . ', ' . "DFY";
+                        $dictionary_types["DFYParcelshop"] = $type['CarrierNaam'] . ', ' . "ParcelShop";
                         break;
                     default:
                         $dictionary_types[$code] = $type['CarrierNaam'] . ', ' . $type['Type'];

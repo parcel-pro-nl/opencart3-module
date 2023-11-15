@@ -10,6 +10,8 @@
 class ModelExtensionShippingParcelPro extends Model {
 
     public $shipping_methode_heading  = 'Parcel Pro';
+    const PARCEL_PRO = 'Parcel Pro';
+
     function getQuote($address) {
         if (!$this->config->get('shipping_parcel_pro_status')) {
             return;
@@ -18,7 +20,7 @@ class ModelExtensionShippingParcelPro extends Model {
         $language_id = isset($this->session->data['language']) ? $this->session->data['language'] : $this->config->get('config_language');
 
         $parcel_pro_heading =  $this->config->get('parcel_pro_heading');
-        $this->shipping_methode_heading = $parcel_pro_heading[$language_id] ? $parcel_pro_heading[$language_id] :'Parcel Pro';
+        $this->shipping_methode_heading = $this->computeShippingMethodHeading($language_id, $parcel_pro_heading);
 
         $sub_total = $this->cart->getSubTotal();
 
@@ -162,6 +164,28 @@ class ModelExtensionShippingParcelPro extends Model {
         }
 
         return $status;
+    }
+
+    //Functie toegevoegd voor controle van de arrays
+    private function computeShippingMethodHeading($languageId, $heading)
+    {
+
+        //controleren of het een array is en niet leeg is
+        if (! is_array($heading)) {
+            return $this::PARCEL_PRO;
+        }
+
+        //controleren of languageId null is
+        if (is_null($languageId)) {
+            return $this::PARCEL_PRO;
+        }
+
+        //controleren of array key bestaat in $languageId,$heading
+        if (! array_key_exists($languageId, $heading)) {
+            return $this::PARCEL_PRO;
+
+        }
+        return $heading[$languageId];
     }
 
 }

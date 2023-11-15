@@ -9,4 +9,4 @@ Bij vragen kunt u contact opnemen via [info@parcelpro.nl](mailto:info@parcelpro.
 
 ## Changelog
 
-Voor alle historische veranderingen en updates, zie de [changelog](CHANGELOG.md)).
+Voor alle historische veranderingen en updates, zie de [changelog](CHANGELOG.md).

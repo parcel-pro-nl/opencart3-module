@@ -31,7 +31,7 @@ function AddressIsParcelshop(data) {
     var lastname = jQuery("#shipping_method\\:lastname").val();
 
     if (firstname == "DHL ParcelShop") {
-        var label = jQuery('label[for="s_method_parcelpro_dhl_parcelshop"]');
+        var label = jQuery('label[for="s_method_parcelpro_dhl_dfyparcelshop"]');
         var price = jQuery('span', label);
         var priceHtml = jQuery('<div>').append(price.clone()).html();
         jQuery(label).html(firstname + " " + lastname + " <strong>" + priceHtml + "<strong>");
@@ -40,13 +40,6 @@ function AddressIsParcelshop(data) {
     }
     if (firstname == "PostNL Pakketpunt") {
         var label = jQuery('label[for="s_method_parcelpro_postnl_pakjegemak"]');
-        var price = jQuery('span', label);
-        var priceHtml = jQuery('<div>').append(price.clone()).html();
-        jQuery(label).html(firstname + " " + lastname + " <strong>" + priceHtml + "<strong>");
-        return true;
-    }
-    if (firstname == "Intrapost Pickup point") {
-        var label = jQuery('label[for="s_method_parcelpro_intrapost_pickup"]');
         var price = jQuery('span', label);
         var priceHtml = jQuery('<div>').append(price.clone()).html();
         jQuery(label).html(firstname + " " + lastname + " <strong>" + priceHtml + "<strong>");
@@ -83,18 +76,14 @@ window.addEventListener("message", function (event) {
 
 jQuery(document).ready(function () {
     jQuery("input[name=shipping_method]").click(function () {
-      value = $(this).val().slice(0, -2)
+      value = $(this).val().slice(0, -2).toLowerCase();
         if (value === 'parcel_pro.shipping_parcel_pro_type_id_3533') {
             jQuery('#modal').show();
             jQuery('#afhaalpunt_frame').attr('src', ParcelProKiezerUrl() + '&carrier=PostNL');
         }
-        if (value === 'parcel_pro.shipping_parcel_pro_type_id_Parcelshop') {
+        if (value === 'parcel_pro.shipping_parcel_pro_type_id_dfyparcelshop') {
             jQuery('#modal').show();
             jQuery('#afhaalpunt_frame').attr('src', ParcelProKiezerUrl() + '&carrier=DHL');
-        }
-        if (value === 'parcel_pro.shipping_parcel_pro_type_id_9') {
-            jQuery('#modal').show();
-            jQuery('#afhaalpunt_frame').attr('src', ParcelProKiezerUrl() + '&carrier=Intrapost');
         }
     });
 });

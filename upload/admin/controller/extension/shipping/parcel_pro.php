@@ -133,7 +133,7 @@ class ControllerExtensionShippingParcelPro extends Controller {
             $data['shipping_parcel_pro_status'] = $this->config->get('shipping_parcel_pro_status');
         }
 
-        if (isset($this->request->post['parcel_pro_auto_export_status'])) {
+        if (isset($this->request->post['shipping_parcel_pro_auto_export_status'])) {
             $data['shipping_parcel_pro_auto_export_status'] = $this->request->post['shipping_parcel_pro_auto_export_status'];
         } else {
             $data['shipping_parcel_pro_auto_export_status'] = $this->config->get('shipping_parcel_pro_auto_export_status');

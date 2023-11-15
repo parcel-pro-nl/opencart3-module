@@ -5,11 +5,11 @@ class ControllerExtensionModuleParcelpro extends Controller{
     public function post_order_add($route, $output){
         $order_id = $output[0];
         // append return $order_info; in catalog/model/checkout/order.php
-        if($this->config->get('parcel_pro_auto_export_status') !== "*"){
+        if($this->config->get('shipping_parcel_pro_auto_export_status') !== "*"){
             $this->load->model('checkout/order');
             $order = $this->model_checkout_order->getOrder($order_id);
 
-            if($order['order_status_id'] === $this->config->get('parcel_pro_auto_export_status')){
+            if($order['order_status_id'] === $this->config->get('shipping_parcel_pro_auto_export_status')){
                 if(empty($order['su_order_id'])) {
                     $ParcelPro_API = Parcelpro::get_instance($this->registry);
                     $data = $ParcelPro_API->format_order_data($order);

@@ -61,7 +61,7 @@ class Parcelpro {
             }
         }
 
-        $DHL = array("DFY", "Parcelshop", "Europlus", "Europack");
+        $DHL = array("DFY", "DFYParcelshop", "Europlus", "Europack");
         if(in_array($shipping_code[6], $DHL)) $carrier = 'DHL';
         $POSTNL = array(3085, 3086, 3087, 3089, 3091, 3189, 3385, 4940, 3533, 2928);
         if(in_array($shipping_code[6], $POSTNL)) $carrier = 'PostNl';
@@ -73,8 +73,7 @@ class Parcelpro {
         if(in_array($shipping_code[6], $FADELLO)) $carrier = 'Fadello';
         $VSP = array('VSP2928');
         if(in_array($shipping_code[6], $VSP)) $carrier = 'VSP';
-        $Intrapost = array('9');
-        if(in_array($shipping_code[6], $Intrapost)) $carrier = 'Intrapost';
+
 
         $handtekening_bij_aflevering = false;
         $niet_leveren_bij_de_buren = false;
@@ -203,7 +202,7 @@ class Parcelpro {
 
         $data['shipping_company']     = $order['shipping_company'];
 
-        if($data['shipping_method'] == 'parcel_pro_type_id_9' ||$data['shipping_method'] == 'parcel_pro_type_id_3533' || $data['shipping_method'] == 'parcel_pro_type_id_Parcelshop'){
+        if($data['shipping_method'] == 'parcel_pro_type_id_3533' || $data['shipping_method'] == 'parcel_pro_type_id_Parcelshop'){
             $data['shipping_company'] = $order['shipping_company'];
         }
 
@@ -294,6 +293,7 @@ class Parcelpro {
                 switch($code){
                     case'00':
                         $dictionary_types["DFY"] = $type['CarrierNaam'] . ', ' . "DFY";
+                        $dictionary_types["DFYParcelshop"] = $type['CarrierNaam'] . ', ' . "ParcelShop";
                         break;
                     default:
                         $dictionary_types[$code] = $type['CarrierNaam'] . ', ' . $type['Type'];

@@ -1,7 +1,7 @@
 <?php
 
 //==============================================================================
-// Parcel Pro Shipping v1.3.0
+// Parcel Pro Shipping
 //
 // Company: Parcel Pro
 // Contact: info@parcelpro.nl

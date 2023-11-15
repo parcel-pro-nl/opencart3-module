@@ -6,7 +6,7 @@
 // Contact: info@parcelpro.nl
 //==============================================================================
 
-$version = 'v1.0.1';
+$version = '1.4.0';
 
 // Heading
 $_['heading_title'] = 'Parcel Pro';

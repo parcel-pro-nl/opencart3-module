@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: ./build.sh
+      - run: |
+          ./build.sh
+          mv 'ParcelPro.zip' "OpenCart3ParcelProV${{ github.ref_name }}.zip"
       - uses: softprops/action-gh-release@v1
         with:
-          files: ParcelPro.zip
+          files: OpenCart3ParcelProV${{ github.ref_name }}.zip
           generate_release_notes: true

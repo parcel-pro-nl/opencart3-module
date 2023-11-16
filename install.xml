@@ -1,0 +1,359 @@
+<modification>
+    <name><![CDATA[Parcel Pro]]></name>
+    <code><![CDATA[Parcel_Pro]]></code>
+    <version><![CDATA[1.4.0]]></version>
+    <author><![CDATA[ParcelPro]]></author>
+    <link><![CDATA[http://www.parcelpro.nl]]></link>
+    <file path="admin/view/template/sale/order_list.twig">
+        <operation>
+            <search><![CDATA[
+              <button type="button" data-toggle="tooltip" title="{{ button_filter }}" onclick="$('#filter-order').toggleClass('hidden-sm hidden-xs');" class="btn btn-default hidden-md hidden-lg"><i class="fa fa-filter"></i></button>
+            ]]></search>
+            <add position="after"><![CDATA[
+              <button type="submit" form="form-order" formaction="{{ action_submit_su }}" data-toggle="tooltip" title="Aanmelden bij Parcel Pro" class="btn btn-primary"><img src="../image/parcelpro/arrows.svg" style="height: 12px;"></button>
+              <button type="submit" form="form-order" formaction="{{ action_label }}" formtarget="_blank" data-toggle="tooltip" title="Print Parcel Pro verzendlabel" class="btn btn-primary"><img src="../image/parcelpro/symbol.svg" style="height: 12px;"></button>
+            ]]></add>
+        </operation>
+    </file>
+
+    <!-- Append items to controller -->
+    <file path="admin/controller/sale/order.php">
+      <operation>
+          <search><![CDATA[
+		          $data['shipping'] = $this->url->link('sale/order/shipping', 'user_token=' . $this->session->data['user_token'], true);
+          ]]></search>
+          <add position="after"><![CDATA[
+            $data['action_submit_su'] = $this->url->link('sale/pp_order/submit_su', 'user_token=' . $this->session->data['user_token'], 'SSL');
+            $data['action_label'] = $this->url->link('sale/pp_order/label', 'user_token=' . $this->session->data['user_token'], 'SSL');
+          ]]></add>
+      </operation>
+      <operation>
+          <search><![CDATA[
+              $data['error_warning'] = '';
+          ]]></search>
+          <add position="replace"><![CDATA[
+            if(isset($this->session->data['warning'])){
+        			$data['error_warning'] = $this->session->data['warning'];
+              unset($this->session->data['warning']);
+        		}else{
+        			$data['error_warning'] = '';
+        		}
+          ]]></add>
+      </operation>
+    </file>
+
+    <!-- Append html for Afhaallocatie DEFAULT THEME  -->
+    <file path="catalog/view/theme/default/template/checkout/shipping_method.twig">
+        <operation info="fix shipping method error">
+            <search><![CDATA[
+                        <div class="buttons">
+                        ]]></search>
+            <add position="before"><![CDATA[
+                        <input type="hidden" name="pp_gebruiker_id" value="{{ gebruiker_id }}">
+                        <input type="hidden" name="pp_firstname" value="">
+                        <input type="hidden" name="pp_lastname" value="">
+                        <input type="hidden" name="pp_company" value="">
+                        <input type="hidden" name="pp_address_1" value="">
+                        <input type="hidden" name="pp_address_2" value="">
+                        <input type="hidden" name="pp_postcode" value="">
+                        <input type="hidden" name="pp_city" value="">
+                        <link href="catalog/view/theme/default/stylesheet/parcelpro.css" rel="stylesheet">
+                        <script src="catalog/view/javascript/parcelpro.js" type="text/javascript"></script>
+                        <div class="global-modal" id="modal">
+                            <div class="overlay" id="global_overlay"></div>
+                            <div class="global-modal_contents modal-transition">
+                                <iframe class="global-frame" frameborder="0" scrolling="no" id="afhaalpunt_frame" src=""></iframe>
+                            </div>
+                        </div>
+
+                        ]]></add>
+        </operation>
+    </file>
+
+
+    <!-- Check Afhaallocatie option  DEFAULT THEME -->
+    <file path="catalog/controller/checkout/shipping_method.php">
+        <operation info="check shipping location option">
+            <search><![CDATA[
+                      $shipping = explode('.', $this->request->post['shipping_method']);
+                      ]]></search>
+            <add position="after"><![CDATA[
+                if( (substr($this->request->post['shipping_method'], 0, -2) == 'parcel_pro.shipping_parcel_pro_type_id_3533' )
+                  || (substr($this->request->post['shipping_method'], 0, -2) == 'parcel_pro.shipping_parcel_pro_type_id_Parcelshop' )
+                ){
+                  if(empty($this->request->post['pp_firstname']))
+                    $json['error']['warning'] = str_replace('&nbsp;', '', strip_tags('Kies een afhaalpunt of selecteer een andere verzendmethode.'));
+                }
+              ]]></add>
+        </operation>
+        <operation info="fix shipping method error">
+            <search><![CDATA[
+                    $this->response->setOutput($this->load->view('checkout/shipping_method', $data));
+                    ]]></search>
+            <add position="before"><![CDATA[
+                    $data['gebruiker_id'] = $this->config->get('parcelpro_Id');
+            ]]></add>
+        </operation>
+        <operation info="fix shipping method error">
+            <search><![CDATA[
+                        $this->session->data['comment'] = strip_tags($this->request->post['comment']);
+                        ]]></search>
+            <add position="after"><![CDATA[
+                        $this->session->data['shipping_address']['zone'] = "";
+                        if($this->request->post['pp_firstname'] != ""){
+                            $this->session->data['shipping_address']['firstname'] = $this->request->post['pp_firstname'];
+                        }
+                        if($this->request->post['pp_lastname'] != ""){
+                            $this->session->data['shipping_address']['lastname'] = $this->request->post['pp_lastname'];
+                        }
+                        if($this->request->post['pp_company'] != ""){
+                            $this->session->data['shipping_address']['company'] = $this->request->post['pp_company'];
+                        }
+                        if($this->request->post['pp_address_1'] != ""){
+                            $this->session->data['shipping_address']['address_1'] = $this->request->post['pp_address_1'];
+                        }
+                        if($this->request->post['pp_address_2'] != ""){
+                            $this->session->data['shipping_address']['address_2'] = $this->request->post['pp_address_2'];
+                        }
+                        if($this->request->post['pp_postcode'] != ""){
+                            $this->session->data['shipping_address']['postcode'] = $this->request->post['pp_postcode'];
+                        }
+                        if($this->request->post['pp_city'] != ""){
+                            $this->session->data['shipping_address']['city'] = $this->request->post['pp_city'];
+                        }
+            ]]></add>
+        </operation>
+    </file>
+
+    <!-- Add hidden fields to posted value  -->
+    <file path="catalog/view/theme/default/template/checkout/checkout.twig">
+        <operation info="fix shipping method error">
+            <search><![CDATA[
+                        data: $('#collapse-shipping-method input[type=\'radio\']:checked, #collapse-shipping-method textarea'),
+                        ]]></search>
+            <add position="replace"><![CDATA[
+                        data: $('#collapse-shipping-method input[type=\'radio\']:checked, #collapse-shipping-method textarea, #collapse-shipping-method input[type=\'hidden\']'),
+                        ]]></add>
+        </operation>
+    </file>
+
+    <!-- Journal 2 extension -->
+    <file path="catalog/view/theme/journal2/template/journal2/checkout/shipping_methods.twig">
+        <operation>
+            <search><![CDATA[
+                        <div class="checkout-content checkout-shipping-methods">
+                        ]]></search>
+            <add position="before"><![CDATA[
+                        <input type="hidden" name="pp_gebruiker_id" value="<?php echo $this->config->get('parcelpro_Id'); ?>">
+                        <input type="hidden" name="pp_firstname" value="">
+                        <input type="hidden" name="pp_lastname" value="">
+                        <input type="hidden" name="pp_company" value="">
+                        <input type="hidden" name="pp_address_1" value="">
+                        <input type="hidden" name="pp_address_2" value="">
+                        <input type="hidden" name="pp_postcode" value="">
+                        <input type="hidden" name="pp_city" value="">
+                        <link href="catalog/view/theme/default/stylesheet/parcelpro.css" rel="stylesheet">
+                        <script src="catalog/view/javascript/parcelpro.js" type="text/javascript"></script>
+                        <div class="global-modal" id="modal">
+                            <div class="overlay" id="global_overlay"></div>
+                            <div class="global-modal_contents modal-transition">
+                                <iframe class="global-frame" frameborder="0" scrolling="no" id="afhaalpunt_frame" src=""></iframe>
+                            </div>
+                        </div>
+
+                        ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/journal2/checkout.php">
+        <operation>
+            <search><![CDATA[
+                      $this->session->data['shipping_method'] = $this->session->data['shipping_methods'][$shipping[0]]['quote'][$shipping[1]];
+                      ]]></search>
+            <add><![CDATA[
+                      if( (substr($this->request->post['shipping_method'], 0, -2) == 'parcel_pro.shipping_parcel_pro_type_id_3533' )
+                        || (substr($this->request->post['shipping_method'], 0, -2) == 'parcel_pro.shipping_parcel_pro_type_id_Parcelshop' )
+                      ){
+                        if(empty($this->request->post['pp_firstname'])){
+                          $errors['shipping_method'] = str_replace('&nbsp;', '', strip_tags('Kies een afhaalpunt of selecteer een andere verzendmethode.'));
+                        }else{
+                          $this->session->data['shipping_zone'] = "";
+                          if($this->request->post['pp_firstname'] != ""){
+                              $order_data['shipping_firstname'] = $this->request->post['pp_firstname'];
+                          }
+                          if($this->request->post['pp_lastname'] != ""){
+                              $order_data['shipping_lastname'] = $this->request->post['pp_lastname'];
+                          }
+                          if($this->request->post['pp_company'] != ""){
+                              $order_data['shipping_company']= $this->request->post['pp_company'];
+                          }
+                          if($this->request->post['pp_address_1'] != ""){
+                              $order_data['shipping_address_1'] = $this->request->post['pp_address_1'];
+                          }
+                          if($this->request->post['pp_address_2'] != ""){
+                              $order_data['shipping_address_2'] = $this->request->post['pp_address_2'];
+                          }
+                          if($this->request->post['pp_postcode'] != ""){
+                              $order_data['shipping_postcode'] = $this->request->post['pp_postcode'];
+                          }
+                          if($this->request->post['pp_city'] != ""){
+                              $order_data['shipping_city'] = $this->request->post['pp_city'];
+                          }
+                        }
+
+                      }
+          ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/view/theme/journal2/template/journal2/checkout/checkout.twig">
+        <operation>
+            <search><![CDATA[
+                      $.each(json['errors'], function (k, v) {
+                      ]]></search>
+            <add position="after"><![CDATA[
+            if(k === 'shipping_method'){
+              var $element = $('.journal-checkout .checkout-shipping-methods');
+              $element.append('<div class="text-danger">' + v + '</div>');
+            }
+          ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                      var data = {};
+            ]]></search>
+            <add position="after"><![CDATA[
+            $('.journal-checkout input[type="hidden"]').each(function () {
+                data[$(this).attr('name')] = $(this).val();
+            });
+          ]]></add>
+        </operation>
+
+    </file>
+    <!-- END Journal 2 extension -->
+
+    <!-- Journal 3 extension -->
+    <file path="catalog/view/theme/journal3/template/journal3/checkout/shipping_method.twig">
+        <operation>
+            <search><![CDATA[
+                        <div class="section-body">
+            ]]></search>
+            <add position="after"><![CDATA[
+              <input type="hidden" name="pp_gebruiker_id" value="{{ gebruiker_id }}">
+              <input type="hidden" name="pp_firstname" value="">
+              <input type="hidden" name="pp_lastname" value="">
+              <input type="hidden" name="pp_company" value="">
+              <input type="hidden" name="pp_address_1" value="">
+              <input type="hidden" name="pp_address_2" value="">
+              <input type="hidden" name="pp_postcode" value="">
+              <input type="hidden" name="pp_city" value="">
+              <link href="catalog/view/theme/default/stylesheet/parcelpro.css" rel="stylesheet">
+              <div class="global-modal" id="modal">
+                  <div class="overlay" id="global_overlay"></div>
+                  <div class="global-modal_contents modal-transition">
+                      <iframe class="global-frame" frameborder="0" scrolling="no" id="afhaalpunt_frame" src=""></iframe>
+                  </div>
+              </div>
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/journal3/checkout.php">
+        <operation>
+            <search><![CDATA[
+              		$this->journal3->document->addScript('catalog/view/theme/journal3/js/checkout.js', 'footer');
+              ]]></search>
+            <add position="after"><![CDATA[
+              $this->journal3->document->addScript('catalog/view/javascript/parcelpro.js', 'footer');
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+              	'error_warning' => sprintf($this->language->get('error_no_shipping'), $this->url->link('information/contact')),
+              ]]></search>
+            <add position="after"><![CDATA[
+                'gebruiker_id' => $this->config->get('parcelpro_Id'),
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+              	$agree = $this->model_journal3_links->getInformation($this->config->get('config_checkout_id'));
+              ]]></search>
+            <add position="after"><![CDATA[
+              if( (substr(Arr::get($this->request->post['order_data'], 'shipping_code') , 0, -2) == 'parcel_pro.shipping_parcel_pro_type_id_3533' )
+      					|| (substr(Arr::get($this->request->post['order_data'], 'shipping_code') , 0, -2) == 'parcel_pro.shipping_parcel_pro_type_id_Parcelshop' )
+      				){
+      					if(empty(Arr::get($this->request->post['order_data'], 'pp_firstname') ) ){
+      						$error['shipping_code'] = str_replace('&nbsp;', '', strip_tags('Kies een afhaalpunt of selecteer een andere verzendmethode.'));
+      					}
+      				}
+            ]]></add>
+        </operation>
+
+        <operation>
+            <search><![CDATA[
+              	$this->renderJson('success', $json);
+              ]]></search>
+            <add position="before"><![CDATA[
+              if(!$error){
+
+                if( (substr(Arr::get($this->request->post['order_data'], 'shipping_code') , 0, -2) == 'parcel_pro.shipping_parcel_pro_type_id_3533' )
+                  || (substr(Arr::get($this->request->post['order_data'], 'shipping_code') , 0, -2) == 'parcel_pro.shipping_parcel_pro_type_id_Parcelshop' )
+                ){
+                  $this->session->data['same_address'] = false;
+                  $this->request->post['same_address'] = false;
+                  if(Arr::get($this->request->post['order_data'], 'pp_firstname') != ""){
+                      $this->session->data['shipping_address']['firstname'] = Arr::get($this->request->post['order_data'], 'pp_firstname');
+                      $this->request->post['order_data']['shipping_firstname'] = Arr::get($this->request->post['order_data'], 'pp_firstname');
+                  }
+                  if(Arr::get($this->request->post['order_data'], 'pp_lastname') != ""){
+                      $this->session->data['shipping_address']['lastname'] = Arr::get($this->request->post['order_data'], 'pp_lastname');
+                      $this->request->post['order_data']['shipping_lastname'] = Arr::get($this->request->post['order_data'], 'pp_lastname');
+                  }
+                  if(Arr::get($this->request->post['order_data'], 'pp_company') != ""){
+                      $this->session->data['shipping_address']['company'] = Arr::get($this->request->post['order_data'], 'pp_company');
+                      $this->request->post['order_data']['shipping_company'] = Arr::get($this->request->post['order_data'], 'pp_company');
+                  }
+                  if(Arr::get($this->request->post['order_data'], 'pp_address_1') != ""){
+                      $this->session->data['shipping_address']['address_1'] = Arr::get($this->request->post['order_data'], 'pp_address_1');
+                      $this->request->post['order_data']['shipping_address_1'] = Arr::get($this->request->post['order_data'], 'pp_address_1');
+                  }
+                  if(Arr::get($this->request->post['order_data'], 'pp_address_2') != ""){
+                      $this->session->data['shipping_address']['address_2'] = Arr::get($this->request->post['order_data'], 'pp_address_2');
+                      $this->request->post['order_data']['shipping_address_2'] = Arr::get($this->request->post['order_data'], 'pp_address_2');
+                  }
+                  if(Arr::get($this->request->post['order_data'], 'pp_postcode') != ""){
+                      $this->session->data['shipping_address']['postcode'] = Arr::get($this->request->post['order_data'], 'pp_postcode');
+                      $this->request->post['order_data']['shipping_postcode'] = Arr::get($this->request->post['order_data'], 'pp_postcode');
+                  }
+                  if(Arr::get($this->request->post['order_data'], 'pp_city') != ""){
+                      $this->session->data['shipping_address']['city'] = Arr::get($this->request->post['order_data'], 'pp_city');
+                      $this->request->post['order_data']['shipping_city'] = Arr::get($this->request->post['order_data'], 'pp_city');
+                  }
+                }
+
+          			$this->model_journal3_checkout->update();
+          		}
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/view/theme/journal3/js/checkout.js">
+        <operation>
+            <search><![CDATA[
+                  this.error = {};
+              ]]></search>
+            <add position="after"><![CDATA[
+              this.order_data['pp_gebruiker_id'] = $('input[name=pp_gebruiker_id]').val();
+              this.order_data['pp_firstname'] = $('input[name=pp_firstname]').val();
+              this.order_data['pp_lastname'] = $('input[name=pp_lastname]').val();
+              this.order_data['pp_company'] = $('input[name=pp_company]').val();
+              this.order_data['pp_address_1'] = $('input[name=pp_address_1]').val();
+              this.order_data['pp_address_2'] = $('input[name=pp_address_2]').val();
+              this.order_data['pp_postcode'] = $('input[name=pp_postcode]').val();
+              this.order_data['pp_city'] = $('input[name=pp_city]').val();
+            ]]></add>
+        </operation>
+    </file>
+  <!-- END Journal 3 extension -->
+</modification>

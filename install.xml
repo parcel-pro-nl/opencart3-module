@@ -16,6 +16,22 @@
         </operation>
     </file>
 
+    <file path="admin/view/template/sale/order_info.twig">
+        <operation>
+            <!-- The first endif statement is right after the shipping method info. -->
+            <!-- See: https://github.com/opencart/opencart/blob/3.0.3.9/upload/admin/view/template/sale/order_info.twig#L40 -->
+            <search index="0"><![CDATA[
+              {% endif %}
+            ]]></search>
+            <add position="after"><![CDATA[
+              <tr>
+                <td><button data-toggle="tooltip" title="Tracking Code" class="btn btn-info btn-xs"><i class="fa fa-qrcode fa-fw"></i></button></td>
+                <td>TODO: code</td>
+              </tr>
+            ]]></add>
+        </operation>
+    </file>
+
     <!-- Append items to controller -->
     <file path="admin/controller/sale/order.php">
       <operation>

@@ -1,7 +1,7 @@
 <modification>
     <name><![CDATA[Parcel Pro]]></name>
     <code><![CDATA[Parcel_Pro]]></code>
-    <version><![CDATA[1.4.0]]></version>
+    <version><![CDATA[1.5.0]]></version>
     <author><![CDATA[ParcelPro]]></author>
     <link><![CDATA[http://www.parcelpro.nl]]></link>
     <file path="admin/view/template/sale/order_list.twig">
@@ -12,6 +12,24 @@
             <add position="after"><![CDATA[
               <button type="submit" form="form-order" formaction="{{ action_submit_su }}" data-toggle="tooltip" title="Aanmelden bij Parcel Pro" class="btn btn-primary"><img src="../image/parcelpro/arrows.svg" style="height: 12px;"></button>
               <button type="submit" form="form-order" formaction="{{ action_label }}" formtarget="_blank" data-toggle="tooltip" title="Print Parcel Pro verzendlabel" class="btn btn-primary"><img src="../image/parcelpro/symbol.svg" style="height: 12px;"></button>
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="admin/view/template/sale/order_info.twig">
+        <operation>
+            <!-- The first endif statement is right after the shipping method info. -->
+            <!-- See: https://github.com/opencart/opencart/blob/3.0.3.9/upload/admin/view/template/sale/order_info.twig#L40 -->
+            <search index="0"><![CDATA[
+              {% endif %}
+            ]]></search>
+            <add position="after"><![CDATA[
+              {% if su_barcode %}
+                <tr>
+                  <td><button data-toggle="tooltip" title="Tracking Code" class="btn btn-info btn-xs"><i class="fa fa-qrcode fa-fw"></i></button></td>
+                  <td><a href="{{ su_url_tracking }}" target="_blank">{{ su_barcode }}</a></td>
+                </tr>
+              {% endif %}
             ]]></add>
         </operation>
     </file>
@@ -38,6 +56,19 @@
         		}else{
         			$data['error_warning'] = '';
         		}
+          ]]></add>
+      </operation>
+      <operation>
+          <!-- The second shipping_method assignment is part of the order info screen. -->
+          <!-- See: https://github.com/opencart/opencart/blob/3.0.3.9/upload/admin/controller/sale/order.php#L858 -->
+          <search index="1"><![CDATA[
+              $data['shipping_method'] = $order_info['shipping_method'];
+          ]]></search>
+          <add position="after"><![CDATA[
+              $this->load->model('sale/pp_order');
+              $pp_order_info = $this->model_sale_pp_order->getOrder($order_id);
+              $data['su_barcode'] = $pp_order_info['su_barcode'];
+              $data['su_url_tracking'] = $pp_order_info['su_url_tracking'];
           ]]></add>
       </operation>
     </file>

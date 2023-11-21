@@ -1,5 +1,11 @@
 # Changelog
 
+## V1.5.0
+
+### Nieuwe functionaliteiten
+
+- Geef barcode weer in order info view
+
 ## V1.4.0
 
 ### Nieuwe functionaliteiten

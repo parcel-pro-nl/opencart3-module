@@ -50,6 +50,7 @@ class ModelSalePpOrder extends Model {
                 'su_order_id' => $order_query->row['su_order_id'],
                 'su_label_printed' => $order_query->row['su_label_printed'],
                 'su_barcode' => $order_query->row['su_barcode'],
+                'su_url_tracking' => $order_query->row['su_url_tracking'],
                 'su_weight' => $order_query->row['su_weight'],
                 'su_colli' => $order_query->row['su_colli'],
                 'date_added' => $order_query->row['date_added']

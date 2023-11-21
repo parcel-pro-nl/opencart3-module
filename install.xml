@@ -27,7 +27,7 @@
               {% if su_barcode %}
                 <tr>
                   <td><button data-toggle="tooltip" title="Tracking Code" class="btn btn-info btn-xs"><i class="fa fa-qrcode fa-fw"></i></button></td>
-                  <td>{{ su_barcode }}</td>
+                  <td><a href="{{ su_url_tracking }}" target="_blank">{{ su_barcode }}</a></td>
                 </tr>
               {% endif %}
             ]]></add>
@@ -68,6 +68,7 @@
               $this->load->model('sale/pp_order');
               $pp_order_info = $this->model_sale_pp_order->getOrder($order_id);
               $data['su_barcode'] = $pp_order_info['su_barcode'];
+              $data['su_url_tracking'] = $pp_order_info['su_url_tracking'];
           ]]></add>
       </operation>
     </file>

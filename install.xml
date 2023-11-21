@@ -24,10 +24,12 @@
               {% endif %}
             ]]></search>
             <add position="after"><![CDATA[
-              <tr>
-                <td><button data-toggle="tooltip" title="Tracking Code" class="btn btn-info btn-xs"><i class="fa fa-qrcode fa-fw"></i></button></td>
-                <td>TODO: code</td>
-              </tr>
+              {% if su_barcode %}
+                <tr>
+                  <td><button data-toggle="tooltip" title="Tracking Code" class="btn btn-info btn-xs"><i class="fa fa-qrcode fa-fw"></i></button></td>
+                  <td>{{ su_barcode }}</td>
+                </tr>
+              {% endif %}
             ]]></add>
         </operation>
     </file>
@@ -54,6 +56,18 @@
         		}else{
         			$data['error_warning'] = '';
         		}
+          ]]></add>
+      </operation>
+      <operation>
+          <!-- The second shipping_method assignment is part of the order info screen. -->
+          <!-- See: https://github.com/opencart/opencart/blob/3.0.3.9/upload/admin/controller/sale/order.php#L858 -->
+          <search index="1"><![CDATA[
+              $data['shipping_method'] = $order_info['shipping_method'];
+          ]]></search>
+          <add position="after"><![CDATA[
+              $this->load->model('sale/pp_order');
+              $pp_order_info = $this->model_sale_pp_order->getOrder($order_id);
+              $data['su_barcode'] = $pp_order_info['su_barcode'];
           ]]></add>
       </operation>
     </file>

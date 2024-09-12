@@ -1,5 +1,11 @@
 # Changelog
 
+## V1.6.0
+
+### Fix
+
+- Strftime() veranderd naar date()
+
 ## V1.5.0
 
 ### Nieuwe functionaliteiten

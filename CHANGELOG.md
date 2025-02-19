@@ -1,4 +1,9 @@
 # Changelog
+## V1.6.1
+
+### Fix
+
+- Check op nummer uitgecomment
 
 ## V1.6.0
 

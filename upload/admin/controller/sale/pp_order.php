@@ -65,7 +65,7 @@ class ControllerSalePpOrder extends Controller
                     !empty($data['shipping_firstname'])
                     && !empty($data['shipping_lastname'])
                     && !empty($data['shipping_address_1'])
-                    && !empty($data['nummer'])
+//                    && !empty($data['nummer'])
                     && !empty($data['shipping_postcode'])
                     && !empty($data['shipping_city'])
                     && !empty($data['shipping_country'])
